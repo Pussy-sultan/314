@@ -3,6 +3,7 @@ package ru.kata.spring.boot_security.demo;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.service.RoleService;
@@ -10,10 +11,8 @@ import ru.kata.spring.boot_security.demo.service.RoleServiceImp;
 import ru.kata.spring.boot_security.demo.service.UserService;
 import ru.kata.spring.boot_security.demo.service.UserServiceImp;
 
-import java.util.Arrays;
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @SpringBootApplication
 public class SpringBootSecurityDemoApplication {
@@ -26,6 +25,7 @@ public class SpringBootSecurityDemoApplication {
 	public static void initApplicationDefault(ConfigurableApplicationContext context) {
 		UserService userService = context.getBean(UserServiceImp.class);
 		RoleService roleService = context.getBean(RoleServiceImp.class);
+		BCryptPasswordEncoder bCryptPasswordEncoder = context.getBean(BCryptPasswordEncoder.class);
 
 		roleService.saveIfExists("ROLE_ADMIN");
 		roleService.saveIfExists("ROLE_USER");
@@ -36,12 +36,36 @@ public class SpringBootSecurityDemoApplication {
 			User newUser = new User(
 					"Admin",
 					"admin@mail.ru",
-					"admin"
+					bCryptPasswordEncoder.encode("admin")
 			);
-			newUser.setRoleList(roleList);
+			newUser.setRoles(roleList);
 			userService.save(newUser);
-
 		}
-		context.close();
+
+		User demoUser1 = userService.getByEmail("user1@mail.ru");
+		if (demoUser1 == null) {
+			List<Role> roleList = new ArrayList<>();
+			roleList.add(roleService.findByName("ROLE_USER"));
+			User newUser = new User(
+					"User1",
+					"user1@mail.ru",
+					bCryptPasswordEncoder.encode("user")
+			);
+			newUser.setRoles(roleList);
+			userService.save(newUser);
+		}
+
+		User demoUser2 = userService.getByEmail("user2@mail.ru");
+		if (demoUser2 == null) {
+			List<Role> roleList = new ArrayList<>();
+			roleList.add(roleService.findByName("ROLE_USER"));
+			User newUser = new User(
+					"User2",
+					"user2@mail.ru",
+					bCryptPasswordEncoder.encode("user")
+			);
+			newUser.setRoles(roleList);
+			userService.save(newUser);
+		}
 	}
 }

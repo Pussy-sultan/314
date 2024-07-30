@@ -6,7 +6,6 @@ import javax.persistence.*;
 import java.util.Collection;
 
 @Entity
-@Table(name = "roles")
 public class Role implements GrantedAuthority {
 
     @Id
@@ -17,7 +16,7 @@ public class Role implements GrantedAuthority {
     private String name;
 
     @Transient
-    @ManyToMany(mappedBy = "roles")
+    @ManyToMany()
     private Collection<User> users;
 
     @Override

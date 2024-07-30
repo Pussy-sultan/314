@@ -21,10 +21,7 @@ public class User implements UserDetails {
     @Column
     private String password;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(name = "users_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    @ManyToMany(fetch = FetchType.LAZY)
     private Collection<Role> roles;
 
     public User() { }
@@ -59,19 +56,20 @@ public class User implements UserDetails {
         this.email = email;
     }
 
-    public Collection<Role> getRoleList() {
+    public Collection<Role> getRoles() {
         return roles;
     }
 
-    public void setRoleList(Collection<Role> roles) {
+    public void setRoles(Collection<Role> roles) {
         this.roles = roles;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return getRoleList();
+        return getRoles();
     }
 
+    @Override
     public String getPassword() {
         return password;
     }

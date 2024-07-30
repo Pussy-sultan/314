@@ -10,5 +10,8 @@ public interface UserService {
     void deleteById(int id);
     User getById(int id);
     User getByEmail(String email);
+    User getByName(String email);
     List<User> getAll();
+    List<User> getWithoutAdmin();
+    String getRoleListByUser(User user);
 }

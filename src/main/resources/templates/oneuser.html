@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:score="http://thymeleafexamples">
+<head th:replace="blocks/header :: htmlhead"/>
+<body>
+<div class="container mt-5">
+    <h1 class="mb-4" th:text="'Приветствую ' + ${user}"></h1>
+    <ul class="list-unstyled">
+        <li th:text="'name: '+${user.getName()}"></li>
+        <li th:text="'email: '+${user.getEmail()}"></li>
+    </ul>
+    <a href="/logout" class="btn btn-secondary">Выйти</a>
+
+<!--    <form method="post" action="#" th:action="@{/}" th:object="${user}">-->
+<!--        <input type="hidden" th:field="*{id}" th:value="*{getId()}">-->
+<!--        <div class="mb-3">-->
+<!--            <label for="name" class="form-label">Имя</label>-->
+<!--            <input type="text" class="form-control" id="name" th:field="*{name}" th:value="*{getName()}" required>-->
+<!--        </div>-->
+<!--        <div class="mb-3">-->
+<!--            <label for="email" class="form-label">Электронная почта</label>-->
+<!--            <input type="email" class="form-control" id="email" th:field="*{email}" th:value="*{getEmail()}" required>-->
+<!--        </div>-->
+<!--        <a href="/logout" class="btn btn-secondary">Выйти</a>-->
+<!--    </form>-->
+<!--    <a href="/logout" class="btn btn-secondary">Выйти</a>-->
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>

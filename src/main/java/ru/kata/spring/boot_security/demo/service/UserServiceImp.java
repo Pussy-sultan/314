@@ -53,8 +53,32 @@ public class UserServiceImp implements UserService, UserDetailsService {
 
     @Transactional(readOnly = true)
     @Override
+    public List<User> getWithoutAdmin() {
+        return userRepository.findAll()
+                .stream()
+                .filter(user -> user.getRoles().stream()
+                        .filter(role -> role.getName().equals("ROLE_ADMIN"))
+                        .toList().isEmpty()
+                )
+                .toList();
+    }
+
+    @Transactional(readOnly = true)
+    @Override
     public User getByEmail(String email) {
         return userRepository.findByEmail(email);
+    }
+
+    public String getRoleListByUser(User user) {
+        return user.getRoles().stream().reduce(
+                "", (partialAgeResult, item) -> partialAgeResult + ((partialAgeResult.isEmpty() ? "" : " ") + item.getName()), String::concat
+        );
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public User getByName(String email) {
+        return userRepository.findByName(email);
     }
 
     @Override
@@ -67,7 +91,7 @@ public class UserServiceImp implements UserService, UserDetailsService {
         return new org.springframework.security.core.userdetails.User(
                 user.getName(),
                 user.getPassword(),
-                mapRolesToAuthorities(user.getRoleList())
+                mapRolesToAuthorities(user.getRoles())
         );
     }
 
