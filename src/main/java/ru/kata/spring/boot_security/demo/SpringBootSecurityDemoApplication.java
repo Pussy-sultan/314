@@ -11,8 +11,8 @@ import ru.kata.spring.boot_security.demo.service.RoleServiceImp;
 import ru.kata.spring.boot_security.demo.service.UserService;
 import ru.kata.spring.boot_security.demo.service.UserServiceImp;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @SpringBootApplication
 public class SpringBootSecurityDemoApplication {
@@ -32,7 +32,7 @@ public class SpringBootSecurityDemoApplication {
 
 		User user = userService.getByEmail("admin@mail.ru");
 		if (user == null) {
-			List<Role> roleList = roleService.findAll();
+			Set<Role> roleList = roleService.findAll();
 			User newUser = new User(
 					"Admin",
 					"admin@mail.ru",
@@ -44,7 +44,7 @@ public class SpringBootSecurityDemoApplication {
 
 		User demoUser1 = userService.getByEmail("user1@mail.ru");
 		if (demoUser1 == null) {
-			List<Role> roleList = new ArrayList<>();
+			Set<Role> roleList = new HashSet<>();
 			roleList.add(roleService.findByName("ROLE_USER"));
 			User newUser = new User(
 					"User1",
@@ -57,7 +57,7 @@ public class SpringBootSecurityDemoApplication {
 
 		User demoUser2 = userService.getByEmail("user2@mail.ru");
 		if (demoUser2 == null) {
-			List<Role> roleList = new ArrayList<>();
+			Set<Role> roleList = new HashSet<>();
 			roleList.add(roleService.findByName("ROLE_USER"));
 			User newUser = new User(
 					"User2",

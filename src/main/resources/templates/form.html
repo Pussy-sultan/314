@@ -14,6 +14,20 @@
             <label for="email" class="form-label">Электронная почта</label>
             <input type="email" class="form-control" id="email" th:field="*{email}" th:value="*{getEmail()}" required>
         </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Новый пароль</label>
+            <input type="password" class="form-control" id="password" th:field="*{password}" th:value="*{getPassword()}" required>
+        </div>
+        <div class="mb-3">
+            <select required class="form-select" th:field="*{roles}" multiple aria-label="Multiple select example">
+                <option
+                        th:each="role: ${allRoles}"
+                        th:value="${role.getId()}"
+                        th:text="${role.getName()}"
+                        th:selected="${selectedRoleList.contains(role.getId())}"
+                ></option>
+            </select>
+        </div>
         <button type="submit" class="btn btn-primary" th:text="*{getId()} ? 'Сохранить' : 'Создать'"></button>
         <a href="/admin" class="btn btn-secondary">Отмена</a>
     </form>

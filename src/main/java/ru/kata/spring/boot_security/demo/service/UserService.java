@@ -12,6 +12,5 @@ public interface UserService {
     User getByEmail(String email);
     User getByName(String email);
     List<User> getAll();
-    List<User> getWithoutAdmin();
     String getRoleListByUser(User user);
 }
