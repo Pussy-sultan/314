@@ -71,7 +71,7 @@ public class AdminController {
         System.out.println(user.getName());
         System.out.println(user.getEmail());
         System.out.println(user.getPassword());
-//        userService.save(user);
+        userService.save(user);
         return "redirect:/admin";
     }
 }

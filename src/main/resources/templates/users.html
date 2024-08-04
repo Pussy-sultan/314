@@ -129,11 +129,10 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form th:action="@{/admin}" th:object="${user}" th:method="post">
-                        <form action="#" th:action="@{/admin}" th:id="'formUserEdit-' + ${user.getId()}" th:method="POST" th:object="${user}" class="text-center p-2">
+                    <form action="#" th:action="@{/admin}" th:id="'formUserEdit-' + ${user.getId()}" th:method="post" th:object="${user}" class="text-center p-2">
                             <div class="mb-3">
                                 <label th:for="'modal-id-field-' + ${user.getId()}" class="form-label">ID</label>
-                                <input required disabled type="text" class="form-control" th:id="'modal-id-field-' + ${user.getId()}"/>
+                                <input required disabled type="text" class="form-control" th:field="*{id}" th:value="${user.getId()}" th:id="'modal-id-field-' + ${user.getId()}"/>
                             </div>
                             <div class="mb-3">
                                 <label th:for="'modal-first-name-field-' + ${user.getId()}" class="form-label">First name</label>
@@ -158,7 +157,6 @@
                                 </select>
                             </div>
                         </form>
-                    </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
