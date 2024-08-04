@@ -70,6 +70,19 @@ public class UserServiceImp implements UserService, UserDetailsService {
         );
     }
 
+    @Override
+    public boolean isAdmin(User user) {
+        boolean isAdmin = false;
+        for (Role role :user.getRoles()) {
+            if (role.getName().equals("ROLE_ADMIN")) {
+                isAdmin = true;
+                break;
+            }
+        }
+
+        return isAdmin;
+    }
+
     @Transactional(readOnly = true)
     @Override
     public User getByName(String email) {

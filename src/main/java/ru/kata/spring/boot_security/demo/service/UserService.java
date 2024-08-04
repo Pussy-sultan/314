@@ -13,4 +13,5 @@ public interface UserService {
     User getByName(String email);
     List<User> getAll();
     String getRoleListByUser(User user);
+    boolean isAdmin(User user);
 }

@@ -25,6 +25,9 @@ public class UserController {
     @GetMapping
     public String userPage(Model model, @AuthenticationPrincipal UserDetails user) {
         User findedUser = userService.getByName(user.getUsername());
+
+        model.addAttribute("isAdmin", userService.isAdmin(findedUser));
+        model.addAttribute("roles", userService.getRoleListByUser(findedUser));
         model.addAttribute("user", findedUser);
         return "oneuser";
     }

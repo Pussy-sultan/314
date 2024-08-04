@@ -1,6 +1,8 @@
 package ru.kata.spring.boot_security.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -26,48 +28,50 @@ public class AdminController {
     }
 
     @GetMapping
-    public String adminPage(Model model) {
+    public String adminPage(Model model, @AuthenticationPrincipal UserDetails userDetails) {
+        User findedUser = userService.getByName(userDetails.getUsername());
         List<User> userList = userService.getAll();
         Map<Integer, String> mapa = new HashMap<>();
         for (User user : userList) {
             mapa.put(user.getId(), userService.getRoleListByUser(user));
         }
 
+        model.addAttribute("currentUser", findedUser);
+        model.addAttribute("rolesThisUser", mapa.get(findedUser.getId()));
+        model.addAttribute("userObject", new User());
         model.addAttribute("users", userList);
+        model.addAttribute("allRoles", roleService.findAll());
         model.addAttribute("roles", mapa);
         return "users";
     }
 
-    @GetMapping(value = "/user")
-    public String formUserPage(Model model, @RequestParam(value = "id", defaultValue = "0") int id) {
-        User user = new User();
-        Set<Integer> roleIdList = new HashSet<>();
-        if (id != 0) {
-            user = userService.getById(id);
-            for (Role role: user.getRoles()) {
-                roleIdList.add(role.getId());
-            }
-        }
-
-        model.addAttribute("allRoles", roleService.findAll());
-        model.addAttribute("selectedRoleList", roleIdList);
-        model.addAttribute("admin", user.getEmail());
-        model.addAttribute("user", user);
-        return "form";
-    }
-
-    @GetMapping(value = "/delete/")
+    @DeleteMapping(value = "/delete/")
     public String deleteUser(@RequestParam(value = "id") int id) {
         userService.deleteById(id);
         return "redirect:/admin";
     }
 
     @PostMapping
-    public String saveUser(@ModelAttribute("user") User user, BindingResult bindingResult) {
+    public String saveUser(
+            @ModelAttribute("user") User user,
+            @ModelAttribute("userObject") User userObject,
+            BindingResult bindingResult) {
+        System.out.println("do create user");
         if (bindingResult.hasErrors()) {
-            return "form";
+            System.out.println("error create user");
+            return "redirect:/admin";
         }
-        userService.save(user);
+        System.out.println("userObject");
+        System.out.println(user.getId());
+        System.out.println(user.getName());
+        System.out.println(user.getEmail());
+        System.out.println(user.getPassword());
+        System.out.println("user");
+        System.out.println(user.getId());
+        System.out.println(user.getName());
+        System.out.println(user.getEmail());
+        System.out.println(user.getPassword());
+//        userService.save(user);
         return "redirect:/admin";
     }
 }
