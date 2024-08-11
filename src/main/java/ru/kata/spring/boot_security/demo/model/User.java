@@ -1,5 +1,9 @@
 package ru.kata.spring.boot_security.demo.model;
 
+import org.hibernate.annotations.CascadeType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import org.hibernate.annotations.Cascade;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -11,18 +15,23 @@ import java.util.Set;
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonProperty
     private int id;
 
     @Column
+    @JsonProperty
     private String name;
 
     @Column(unique = true)
+    @JsonProperty
     private String email;
 
     @Column
+    @JsonProperty
     private String password;
 
     @ManyToMany(fetch = FetchType.LAZY)
+    @Cascade({CascadeType.SAVE_UPDATE, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(name = "user_roles")
     private Set<Role> roles;
 
@@ -67,6 +76,7 @@ public class User implements UserDetails {
     }
 
     @Override
+    @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return getRoles();
     }
@@ -77,26 +87,31 @@ public class User implements UserDetails {
     }
 
     @Override
+    @JsonIgnore
     public String getUsername() {
         return name;
     }
 
     @Override
+    @JsonIgnore
     public boolean isAccountNonExpired() {
         return true;
     }
 
     @Override
+    @JsonIgnore
     public boolean isAccountNonLocked() {
         return true;
     }
 
     @Override
+    @JsonIgnore
     public boolean isCredentialsNonExpired() {
         return true;
     }
 
     @Override
+    @JsonIgnore
     public boolean isEnabled() {
         return true;
     }
@@ -106,6 +121,7 @@ public class User implements UserDetails {
     }
 
     @Override
+    @JsonIgnore
     public String toString() {
         return this.name;
     }
