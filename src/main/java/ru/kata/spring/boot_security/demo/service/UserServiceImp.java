@@ -16,25 +16,35 @@ import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.repository.UserRepository;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImp implements UserService, UserDetailsService {
 
     private final UserRepository userRepository;
+    private final RoleService roleService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public UserServiceImp(UserRepository userRepository, @Lazy BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public UserServiceImp(UserRepository userRepository, RoleService roleService, @Lazy BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRepository = userRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.roleService = roleService;
     }
 
     @Transactional
     @Override
     public void save(User user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        Set<Role> roles = user.getRoles();
+        Set<Role> rolesEmpty = new HashSet<>();
+        for (Role role : roles) {
+            rolesEmpty.add(roleService.findByName(role.getName()));
+        }
+        user.setRoles(rolesEmpty);
         userRepository.save(user);
     }
 

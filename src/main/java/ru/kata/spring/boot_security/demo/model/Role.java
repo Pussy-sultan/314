@@ -1,7 +1,5 @@
 package ru.kata.spring.boot_security.demo.model;
 
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.security.core.GrantedAuthority;
@@ -23,7 +21,6 @@ public class Role implements GrantedAuthority {
 
     @ManyToMany(mappedBy = "roles")
     @JsonIgnore
-    @Cascade({CascadeType.SAVE_UPDATE, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     private Set<User> users;
 
     @Override
