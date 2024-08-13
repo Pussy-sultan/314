@@ -3,53 +3,44 @@ package ru.kata.spring.boot_security.demo.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
+import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
 import java.util.List;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/api")
-public class APIController {
+@RequestMapping("/admin")
+public class AdminAPI {
 
     private final UserService userService;
+    private final RoleService roleService;
 
     @Autowired
-    public APIController(UserService userService) {
+    public AdminAPI(UserService userService, RoleService roleService) {
         this.userService = userService;
+        this.roleService = roleService;
     }
 
-    @GetMapping(value = "/users")
+    @GetMapping(value = "/obtainAll")
     @ResponseBody
     public ResponseEntity<List<User>> getUsers() {
         return new ResponseEntity<>(userService.getAll(), HttpStatus.OK);
     }
 
-    @GetMapping(value = "/user/{id}")
+    @GetMapping(value = "/{id}")
     @ResponseBody
-    public ResponseEntity<User> readUserById(@PathVariable("id") int id) {
-        User user = userService.getById(id);
-
-        return new ResponseEntity<>(user, HttpStatus.OK);
+    public ResponseEntity<User> obtainUserById(@PathVariable("id") int id) {
+        return new ResponseEntity<>(userService.getById(id), HttpStatus.OK);
     }
 
     @GetMapping(value = "/roles")
     @ResponseBody
-    public ResponseEntity<Set<Role>> getUsers(@AuthenticationPrincipal UserDetails userDetails) {
-        User user = userService.getByName(userDetails.getUsername());
-        return new ResponseEntity<>(user.getRoles(), HttpStatus.OK);
-    }
-
-    @GetMapping(value = "/user")
-    @ResponseBody
-    public ResponseEntity<User> getUser(@AuthenticationPrincipal UserDetails userDetails) {
-        User user = userService.getByName(userDetails.getUsername());
-        return new ResponseEntity<>(user, HttpStatus.OK);
+    public ResponseEntity<Set<Role>> getRoles() {
+        return new ResponseEntity<>(roleService.findAll(), HttpStatus.OK);
     }
 
     @PostMapping(value = "/save")

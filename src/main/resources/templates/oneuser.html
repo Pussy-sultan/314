@@ -1,15 +1,11 @@
 <!DOCTYPE html>
-<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:score="http://thymeleafexamples">
-<head th:replace="blocks/header :: htmlhead"></head>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="blocks/header :: htmlhead">
 <body>
 
 <nav class="navbar bg-dark" data-bs-theme="dark">
     <div class="container-fluid">
-            <span class="navbar-brand">
-                <strong class="wf-bold" th:text="${user.getEmail()}"></strong>
-                        with roles:
-                        <span th:text="${roles}"></span>
-            </span>
+            <span class="navbar-brand render-header-user"></span>
         <form class="d-flex" th:action="@{/logout}">
             <button class="btn btn-dark" type="submit">Logout</button>
         </form>
@@ -20,7 +16,7 @@
     <div class="row">
         <div class="col-2 bg-white min-vh-100 pt-3 p-0">
             <div class="list-group list-group-flush">
-                <a th:unless="${!isAdmin}" th:href="@{/admin}" class="list-group-item list-group-item-action" >
+                <a th:href="@{/admin}" class="list-group-item list-group-item-action" >
                     Admin
                 </a>
                 <a th:href="@{/user(id=1)}" class="list-group-item list-group-item-action active" aria-current="true">User</a>
@@ -44,14 +40,7 @@
                                         <th scope="col">Role</th>
                                     </tr>
                                     </thead>
-                                    <tbody>
-                                    <tr>
-                                        <th scope="row" th:text="${user.getId()}"></th>
-                                        <td th:text="${user.getName()}"></td>
-                                        <td th:text="${user.getEmail()}"></td>
-                                        <td th:text="${roles}"></td>
-                                    </tr>
-                                    </tbody>
+                                    <tbody class="render-user-body"></tbody>
                                 </table>
                             </li>
             </ul>
@@ -60,5 +49,9 @@
         </div>
     </div>
 </div>
+<script src="/UserService.js"></script>
+<script src="/RenderService.js"></script>
+<script src="/Helpers.js"></script>
+<script src="/user.js"></script>
 </body>
 </html>

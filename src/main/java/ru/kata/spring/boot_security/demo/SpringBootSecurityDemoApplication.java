@@ -27,8 +27,14 @@ public class SpringBootSecurityDemoApplication {
 		RoleService roleService = context.getBean(RoleServiceImp.class);
 		BCryptPasswordEncoder bCryptPasswordEncoder = context.getBean(BCryptPasswordEncoder.class);
 
-		roleService.saveIfExists("ROLE_ADMIN");
-		roleService.saveIfExists("ROLE_USER");
+		Role adminRole = roleService.findByName("ROLE_ADMIN");
+		if (adminRole == null) {
+			roleService.save("ROLE_ADMIN");
+		}
+		Role userRole = roleService.findByName("ROLE_USER");
+		if (userRole == null) {
+			roleService.save("ROLE_USER");
+		}
 
 		User user = userService.getByEmail("admin@mail.ru");
 		if (user == null) {
@@ -36,7 +42,7 @@ public class SpringBootSecurityDemoApplication {
 			User newUser = new User(
 					"Admin",
 					"admin@mail.ru",
-					bCryptPasswordEncoder.encode("admin")
+					"admin"
 			);
 			newUser.setRoles(roleList);
 			userService.save(newUser);
@@ -49,7 +55,7 @@ public class SpringBootSecurityDemoApplication {
 			User newUser = new User(
 					"User1",
 					"user1@mail.ru",
-					bCryptPasswordEncoder.encode("user")
+					"user"
 			);
 			newUser.setRoles(roleList);
 			userService.save(newUser);
@@ -62,7 +68,7 @@ public class SpringBootSecurityDemoApplication {
 			User newUser = new User(
 					"User2",
 					"user2@mail.ru",
-					bCryptPasswordEncoder.encode("user")
+					"user"
 			);
 			newUser.setRoles(roleList);
 			userService.save(newUser);

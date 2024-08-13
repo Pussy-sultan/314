@@ -9,7 +9,8 @@ import org.springframework.web.servlet.resource.PathResourceResolver;
 @Configuration
 public class MvcConfig implements WebMvcConfigurer {
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/user").setViewName("users");
+        registry.addViewController("/admin").setViewName("users");
+        registry.addViewController("/user").setViewName("oneuser");
     }
 
     public void addResourceHandlers(ResourceHandlerRegistry registry) {

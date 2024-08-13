@@ -33,10 +33,7 @@ public class RoleServiceImp implements RoleService {
 
     @Transactional
     @Override
-    public void saveIfExists(String name) {
-        Role currentRole = roleRepository.findByName(name);
-        if (currentRole == null) {
-            roleRepository.save(new Role(name));
-        }
+    public void save(String name) {
+        roleRepository.save(new Role(name));
     }
 }
