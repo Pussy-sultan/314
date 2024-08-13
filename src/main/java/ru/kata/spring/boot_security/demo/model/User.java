@@ -30,7 +30,6 @@ public class User implements UserDetails {
 
     @ManyToMany(fetch = FetchType.LAZY
             , cascade = CascadeType.MERGE
-//            , cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH}
     )
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
