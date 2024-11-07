@@ -49,6 +49,12 @@ public class AdminAPI {
         userService.save(user);
         return ResponseEntity.ok(HttpStatus.CREATED);
     }
+    @PostMapping("/update")
+    @ResponseBody
+    public String updateUser (@ModelAttribute("user") User user) {
+        userService.updateUser(user);
+        return "redirect:/admin";
+    }
 
     @GetMapping(value = "/delete/{id}")
     @ResponseBody

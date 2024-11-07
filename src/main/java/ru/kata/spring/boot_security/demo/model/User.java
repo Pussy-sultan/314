@@ -16,7 +16,7 @@ public class User implements UserDetails {
     @JsonProperty
     private int id;
 
-    @Column
+    @Column(unique = true)
     @JsonProperty
     private String name;
 
